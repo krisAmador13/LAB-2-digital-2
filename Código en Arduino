@@ -1,5 +1,9 @@
+//Contador en décadas y binario haciendo uso de tres botones y 4 leds
+//Un botón indica si se aumenta la cuenta, otro si disminuye y el último indica el modo de conteo
+//Kris Amador 22241 y Nicolás Moklebust 22037
 #include <Arduino.h>
 
+//Definimos los pines a utilizar
 #define SUMA 21
 #define RESTA 19
 #define CAMBIO 18
@@ -8,13 +12,15 @@
 #define LED3 27
 #define LED4 14
 
+//definimos variables globales importantes, para contador y actualización de estado. 
 int contador = 0;
-
 int antes = 1;
 int actual = 0;
 int futuro = 1;
+
 void setup() {
-  Serial.begin(9600); // Initialize serial communication for debugging
+  //Indicamos la función de cada uno de los pines, ya sea input o output, también si se usarán resistencias internas
+  Serial.begin(9600);
   pinMode(CAMBIO, INPUT_PULLUP);
   pinMode(RESTA, INPUT);
   pinMode(SUMA, INPUT_PULLDOWN); // Standard input for CAMBIO
@@ -22,7 +28,8 @@ void setup() {
   pinMode(LED2, OUTPUT);
   pinMode(LED3, OUTPUT);
   pinMode(LED4, OUTPUT);
-  
+
+  //las cuatro leds inician apagadas.
   digitalWrite(LED1, LOW);
   digitalWrite(LED2, LOW);
   digitalWrite(LED3, LOW);
@@ -30,11 +37,12 @@ void setup() {
 }
 
 void loop() {
+  //definimos las variables y asignamos el valor de los botones
   int sumaState = digitalRead(SUMA);
   int restaState = digitalRead(RESTA);
   int cambioState = digitalRead(CAMBIO);
   
-
+  //esto es una manera de confirmar que los botones estén siendo tomados de manera adecuada
   Serial.print("SUMA: ");
   Serial.print(sumaState);
   Serial.print(" RESTA: ");
@@ -42,20 +50,24 @@ void loop() {
   Serial.print(" CAMBIO: ");
   Serial.println(cambioState);
   delay(200);
+  //sistema de actualización de estados
   if(cambioState == 0){
     antes = actual;
     actual = futuro;
     futuro = antes;
     contador = 0; 
   }
-
+//contador en binario, funciona cuando el estado actual tiene un valor de 1
+//haciendo uso de ifs anidados se comprueba el valor de contador para encender las leds 
   if(actual == 1){
+//lógica de contador para cada caso
     if(digitalRead(SUMA)){
     contador ++;
     }
     else if(digitalRead(RESTA)){
       contador --;
     }
+//evita que el contador se pase (overflow y underflow)
     if (contador > 15) {
     contador = 0;
     } else if (contador < 0) {
@@ -160,7 +172,10 @@ void loop() {
       digitalWrite(LED4, LOW);
     }
   }
+//contador en decimal, se activa cuando actual tiene un valor de cero (default)
+//if anidados analizan contador y encienden las leds indicadas para cada número
   else if(actual == 0){
+//logica de contador 
     if(digitalRead(SUMA)){
       contador ++;
     }
