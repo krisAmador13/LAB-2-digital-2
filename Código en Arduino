@@ -1,0 +1,207 @@
+#include <Arduino.h>
+
+#define SUMA 21
+#define RESTA 19
+#define CAMBIO 18
+#define LED1 25
+#define LED2 26
+#define LED3 27
+#define LED4 14
+
+int contador = 0;
+
+int antes = 1;
+int actual = 0;
+int futuro = 1;
+void setup() {
+  Serial.begin(9600); // Initialize serial communication for debugging
+  pinMode(CAMBIO, INPUT_PULLUP);
+  pinMode(RESTA, INPUT);
+  pinMode(SUMA, INPUT_PULLDOWN); // Standard input for CAMBIO
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
+  pinMode(LED4, OUTPUT);
+  
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(LED3, LOW);
+  digitalWrite(LED4, LOW);
+}
+
+void loop() {
+  int sumaState = digitalRead(SUMA);
+  int restaState = digitalRead(RESTA);
+  int cambioState = digitalRead(CAMBIO);
+  
+
+  Serial.print("SUMA: ");
+  Serial.print(sumaState);
+  Serial.print(" RESTA: ");
+  Serial.print(restaState);
+  Serial.print(" CAMBIO: ");
+  Serial.println(cambioState);
+  delay(200);
+  if(cambioState == 0){
+    antes = actual;
+    actual = futuro;
+    futuro = antes;
+    contador = 0; 
+  }
+
+  if(actual == 1){
+    if(digitalRead(SUMA)){
+    contador ++;
+    }
+    else if(digitalRead(RESTA)){
+      contador --;
+    }
+    if (contador > 15) {
+    contador = 0;
+    } else if (contador < 0) {
+      contador = 0;
+    }
+    Serial.print(contador);
+
+    if(contador == 1){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, HIGH);
+    }
+    else if(contador == 2){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 3){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, HIGH);
+    }
+    else if(contador == 4){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 5){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, HIGH);
+    }
+    else if(contador == 6){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 7){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, HIGH);
+    }
+    else if(contador == 8){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 9){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, HIGH);
+    }
+    else if(contador == 10){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 11){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, HIGH);
+    }
+    else if(contador == 12){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 13){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, HIGH);
+    }
+    else if(contador == 14){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 15){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, HIGH);
+    }
+    else{
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, LOW);
+    }
+  }
+  else if(actual == 0){
+    if(digitalRead(SUMA)){
+      contador ++;
+    }
+    else if(digitalRead(RESTA)){
+      contador --;
+    }
+    if (contador > 4) {
+    contador = 0;
+    } else if (contador < 0) {
+      contador = 0;
+    }
+    Serial.print(contador);
+    if(contador == 1){
+      digitalWrite(LED1, HIGH);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 2){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 3){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, HIGH);
+      digitalWrite(LED4, LOW);
+    }
+    else if(contador == 4){
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, HIGH);
+    }
+    else{
+      digitalWrite(LED1, LOW);
+      digitalWrite(LED2, LOW);
+      digitalWrite(LED3, LOW);
+      digitalWrite(LED4, LOW);
+    }
+  }
+}
